@@ -1,8 +1,14 @@
 const express = require('express');
-
 const app = express();
+const expressLayouts = require('express-ejs-layouts');
+
+// Defining the localhost url and port #
 const url = '127.0.0.1';
 const port = 8000;
+
+// Using express ejs layouts library
+// This must be executed before the routes so that before rendering pages from the views, a layout is predefined for all of them
+app.use(expressLayouts);
 
 // Use express router
 app.use('/', require('./routes/index')) // We can omit /index after ./routes because by default, the require() fetches index.js
