@@ -1,6 +1,6 @@
 const express =require('express');
 const router = express.Router();
-const homeController = require('../controllers/home_controller');
-router.get('/', homeController.home);
-router.use('/users', require('./users'))
+const usersController = require('../controllers/users_controller');
+router.get('/profile', usersController.profile);
+router.get('/posts', usersController.posts);
 module.exports = router; // The exported router object is imported in ./index.js (entry point)
