@@ -1,11 +1,12 @@
 const express = require('express');
-const app = express();
 const expressLayouts = require('express-ejs-layouts');
+const db = require('./config/mongoose')
 
 // Defining the localhost url and port #
 const url = '127.0.0.1';
 const port = 8000;
 
+const app = express();
 // Setting the directory for static files (CSS, JS and Images) named as 'assets'
 app.use(express.static('./assets'));
 
