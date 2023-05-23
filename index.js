@@ -6,6 +6,13 @@ const expressLayouts = require('express-ejs-layouts');
 const url = '127.0.0.1';
 const port = 8000;
 
+// Setting the directory for static files (CSS, JS and Images) named as 'assets'
+app.use(express.static('./assets'));
+
+// Extract the styles and scripts from subpages into the layout page
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
 // Using express ejs layouts library
 // This must be executed before the routes so that before rendering pages from the views, a layout is predefined for all of them
 app.use(expressLayouts);
