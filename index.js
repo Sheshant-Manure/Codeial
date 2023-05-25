@@ -1,6 +1,8 @@
+// requiring the necessary libraries and modules
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const db = require('./config/mongoose')
+const db = require('./config/mongoose');
+const cookieParser = require('cookie-parser');
 
 // Defining the localhost url and port #
 const url = '127.0.0.1';
@@ -9,6 +11,11 @@ const port = 8000;
 const app = express();
 // Setting the directory for static files (CSS, JS and Images) named as 'assets'
 app.use(express.static('./assets'));
+
+// When we submit the form from a page, the data is send via post method and therefore the form data can be encoded in the url by using the below middleware
+app.use(express.urlencoded({ extended: true }));
+// Setting the cookie parser middleware
+app.use(cookieParser());
 
 // Extract the styles and scripts from subpages into the layout page
 app.set('layout extractStyles', true);
@@ -23,8 +30,10 @@ app.use('/', require('./routes/index')) // We can omit /index after ./routes bec
 
 // Setting up the EJS view engine 
 app.set('view engine', 'ejs');
-app.set('views', './views'); 
+app.set('views', './views'); // The http requests will be routed to the 'views' directory wherein all the pages and subpages are stored
 
+
+// Setting up the express server at localhost(127.0.0.1 and port:8000)
 app.listen(port, url, (error)=>{
     if(error){
         console.log(error);
