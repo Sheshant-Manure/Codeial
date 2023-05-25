@@ -32,14 +32,14 @@ module.exports.signin = function(req, res) {
     });
 };
 
-// Get the sign up data
+// Get the sign up data and create an account
 module.exports.createAccount = async function(req, res) {
     if(req.body.password != req.body.confirmPassword){
         return res.redirect('back');
     }
 
-    const docs = await User.findOne({email: req.body.email}).exec();
-    if(!docs) // If user (with the entered email on sign up page) is not found, then...
+    const user = await User.findOne({email: req.body.email}).exec();
+    if(!user) // If user (with the entered email on sign up page) is not found, then...
     {
         // Creating a new user with the following credentials
         User.create(
@@ -59,7 +59,21 @@ module.exports.createAccount = async function(req, res) {
     }
 }
 
-// Sign in the user with session/cookie
-module.exports.createSession = function(req, res) {
-    // to be done later
+// Sign in the user with session/cookie for manual authentication
+module.exports.createSession = async function(req, res) {
+    // find the user
+    const user = await User.findOne({email: req.body.email}).exec();
+    if(user) // If user (with the entered email on sign in page) is found, then...
+    {
+        if(user.password == req.body.password) // If the password matches with the corresponding email in the DB, then...
+        {
+            // Creating a new cookie with the following credentials
+            res.cookie('user_id', user._id);
+            res.redirect('profile');
+        }
+        else
+            return res.redirect('back');
+    }
+    // Action when user is found
+    // Action when user is not found
 };

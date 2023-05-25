@@ -7,6 +7,7 @@ router.get('/posts', usersController.posts);
 router.get('/sign_up', usersController.signup);
 router.get('/sign_in', usersController.signin);
 
-router.post('/createAccount', usersController.createAccount);
+router.post('/create-account', usersController.createAccount);
+router.post('/create-session', usersController.createSession);
 
 module.exports = router; // The exported router object is imported in ./index.js (entry point)
