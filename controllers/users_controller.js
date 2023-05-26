@@ -5,10 +5,25 @@ const User = require('../models/userSchema');
 // Format: module.exports.actionName = function() { body/definition }
 
 // Render user profile page
-module.exports.profile = function(req, res) {
-    return res.render('Profile',{
-        title: 'Profile'
-    });
+module.exports.profile = async function(req, res) {
+    if(req.cookies.user_id)
+    {
+        const user = await User.findById(req.cookies.user_id).exec();
+        if(user)
+        {
+            return res.render('profile', {
+                title: 'Profile',
+                username: user.name,
+                email: user.email
+            });
+        }
+        else
+            return res.redirect('back');
+    }
+    else
+        return res.redirect('back');
+
+    
 };
 
 // Render posts page
@@ -68,7 +83,7 @@ module.exports.createSession = async function(req, res) {
         if(user.password == req.body.password) // If the password matches with the corresponding email in the DB, then...
         {
             // Creating a new cookie with the following credentials
-            res.cookie('user_id', user._id);
+            res.cookie('user_id', user._id);  // user_id is the name of the cookie and user._id is its value fetched from the user document from MongoDB server
             res.redirect('profile');
         }
         else
@@ -77,3 +92,10 @@ module.exports.createSession = async function(req, res) {
     // Action when user is found
     // Action when user is not found
 };
+
+// Sign out 
+module.exports.signout = function(req, res) {
+    // Destroy the cookie
+    res.clearCookie('user_id');
+    res.redirect('sign_in');
+}

@@ -6,6 +6,7 @@ router.get('/profile', usersController.profile);
 router.get('/posts', usersController.posts);
 router.get('/sign_up', usersController.signup);
 router.get('/sign_in', usersController.signin);
+router.get('/sign-out', usersController.signout);
 
 router.post('/create-account', usersController.createAccount);
 router.post('/create-session', usersController.createSession);
