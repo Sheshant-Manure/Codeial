@@ -3,12 +3,16 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');  // Used for session cookie
+const passport = require('passport');
+const passportLocal = require('./config/passport_local');
 
 // Defining the localhost url and port #
 const url = '127.0.0.1';
 const port = 8000;
 
 const app = express();
+
 // Setting the directory for static files (CSS, JS and Images) named as 'assets'
 app.use(express.static('./assets'));
 
@@ -25,13 +29,26 @@ app.set('layout extractScripts', true);
 // This must be executed before the routes so that before rendering pages from the views, a layout is predefined for all of them
 app.use(expressLayouts);
 
-// Use express router
-app.use('/', require('./routes/index')) // We can omit /index after ./routes because by default, the require() fetches index.js
-
 // Setting up the EJS view engine 
 app.set('view engine', 'ejs');
 app.set('views', './views'); // The http requests will be routed to the 'views' directory wherein all the pages and subpages are stored
+app.use(session({
+    name: 'codeial',
+    // Todo: change the below secret before deployment in the production mode
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    }
+}));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Use express router
+app.use('/', require('./routes/index')) // We can omit /index after ./routes because by default, the require() fetches index.js
 
 // Setting up the express server at localhost(127.0.0.1 and port:8000)
 app.listen(port, url, (error)=>{
