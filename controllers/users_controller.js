@@ -20,6 +20,9 @@ module.exports.posts = function(req, res) {
 
 // Render sign up page
 module.exports.signup = function(req, res) {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render('user_signup',{
         title: 'Sign Up'
     });
@@ -27,6 +30,9 @@ module.exports.signup = function(req, res) {
 
 // Render sign in page
 module.exports.signin = function(req, res) {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render('user_signin',{
         title: 'Sign In'
     });
