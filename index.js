@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');  // Used for session cookie
 const passport = require('passport');
 const passportLocal = require('./config/passport_local');
+const { collection } = require('./models/userSchema');
+const MongoStore = require('connect-mongo');
 
 // Defining the localhost url and port #
 const url = '127.0.0.1';
@@ -32,6 +34,20 @@ app.use(expressLayouts);
 // Setting up the EJS view engine 
 app.set('view engine', 'ejs');
 app.set('views', './views'); // The http requests will be routed to the 'views' directory wherein all the pages and subpages are stored
+
+// Mongo store is used to store the session cookie in the DB
+const store = MongoStore.create({
+    mongoUrl: 'mongodb+srv://msheshant1997:Sheshant123@cluster0.vhl81py.mongodb.net/?retryWrites=true&w=majority',
+    autoRemove: 'interval',
+    autoRemoveInterval: 10,
+    collection: 'sign-in-session'
+});
+
+// In case, the connection to MongoDB fails to establish,...
+store.on('error', (error)=> {
+    console.log('Error connecting to MongoDB ', error);
+});
+
 app.use(session({
     name: 'codeial',
     // Todo: change the below secret before deployment in the production mode
@@ -40,7 +56,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 100
-    }
+    },
+    store: store
 }));
 
 app.use(passport.initialize());
