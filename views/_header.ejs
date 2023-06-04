@@ -1,4 +1,11 @@
-<!-- Code will be added later for footer -->
+<!-- Code will be added later for hewader -->
 <header>
     <h2>Header</h2>
+    <% if(locals.user) { %>
+        <p>Welcome <%= locals.user.name %>!</p>
+        <a href="/users/sign_out">Sign Out</a>
+    <% } else { %>
+        <a href="/users/sign_up">Sign Up</a>
+        <a href="/users/sign_in">Sign In</a>
+    <% } %>
 </header>

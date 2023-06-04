@@ -69,3 +69,12 @@ module.exports.createAccount = async function(req, res) {
 module.exports.createSession = function(req, res) {
     return res.redirect('/');
 };
+
+module.exports.destroySession = function(req, res, next) {
+    req.logout((err)=>{   // passport does this action
+        if(err) {
+            return next(err);
+        }
+        return res.redirect('/');
+    });  
+};
