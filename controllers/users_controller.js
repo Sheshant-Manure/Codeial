@@ -1,6 +1,6 @@
 // Importing the User model which is defined in userSchema.js
 const User = require('../models/userSchema');
-
+const Post = require('../models/postSchema');
 
 // Format: module.exports.actionName = function() { body/definition }
 
@@ -12,9 +12,20 @@ module.exports.profile = function(req, res) {
 };
 
 // Render posts page
-module.exports.posts = function(req, res) {
+module.exports.posts = async function(req, res) {
+    
+    // Finding all the posts
+    const posts = await Post.find({});
+    let users = [];
+    for(let i=0;i<posts.length;i++){
+        // Finding the user who created the post
+        const user = await User.findById(posts[i].user);
+        users.push(user);
+    }
     return res.render('Posts',{
-        title: 'Posts'
+        title: 'Posts',
+        posts: posts,
+        users: users
     });
 };
 

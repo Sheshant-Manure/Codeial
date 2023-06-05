@@ -5,4 +5,10 @@
         <textarea name="content" cols="30" rows="3" placeholder="Type here..."></textarea>
         <input type="submit" value="post">
     </form>
+    <div id="post-list">
+        <% for (let i = 0; i < posts.length; i++) { %>
+        <p><%= posts[i].content %></p>
+        <small>Posted by <%= users[i].name %></small>
+        <% } %>
+    </div>
 </section>

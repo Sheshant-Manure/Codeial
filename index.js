@@ -40,7 +40,6 @@ const store = MongoStore.create({
     mongoUrl: 'mongodb+srv://msheshant1997:Sheshant123@cluster0.vhl81py.mongodb.net/?retryWrites=true&w=majority',
     autoRemove: 'interval',
     autoRemoveInterval: 10,
-    collection: 'sign-in-session'
 });
 
 // In case, the connection to MongoDB fails to establish,...
