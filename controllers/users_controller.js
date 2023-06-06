@@ -14,6 +14,11 @@ module.exports.profile = function(req, res) {
 // Render posts page
 module.exports.posts = async function(req, res) {
     
+    //If the user is already signned in, then...
+    if(!req.isAuthenticated()){
+        return res.redirect('/users/sign_in');
+    }
+
     // Finding all the posts
     const posts = await Post.find({});
     let users = [];
